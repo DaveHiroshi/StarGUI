@@ -1,0 +1,15 @@
+{
+    "intro": {
+        "text": [
+            "Welcome to the Stargate Text Adventure!",
+            "The year is 2025, and the Stargate program is Earth's first line of defense.",
+            "Your mission is to infiltrate and destroy a Goa'uld Ha'tak.",
+            "But first, you must eliminate the Jaffa base on Mars.",
+            "Good luck, brave explorer!"
+        ]
+    },
+    "outro": [
+    "You jump into a Goauld Deathglider and escape the ship just when it is about to explode.",
+    "You start the Hyperspace engines and fly back to Earth...",
+    "Congratulations! You have defeated the System Lord Ra and saved Earth. Humanity owes you a great debt."]
+}

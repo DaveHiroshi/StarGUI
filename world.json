@@ -1,0 +1,336 @@
+{
+  "planets": [
+    {
+      "name": "Earth",
+      "rooms": [
+        {
+          "name": "Quarters",
+          "description": "Your personal quarters in the SGC.",
+          "objective":"Go to the briefing room and talk to General Hammond.",
+          "connections": [
+            { "to_room": "Armory", "type": "local" },
+            { "to_room": "Briefing Room", "type": "local" }
+          ],
+          "items":["Flashlight"]
+        },
+        {
+          "name": "Armory",
+          "description": "Full of weapons.",
+          "objective":"Go to the Gate room and travel to mars.",
+          "connections": [
+            { "to_room": "Quarters", "type": "local" }
+          ],
+          "items":["P90", "M9", "C4"],
+          "requirement" : ["ID Card"],
+          "npc": {
+            "full_name": "Jack O'Neill",
+            "first_name": "Jack",
+            "last_name": "O'Neill",
+            "dialogues": {
+              "default": [
+                "General Hammond has already informed me of the situation. I take it you have already talked with Hammond?",
+                "I heard Hammond briefed you. So, whats the plan, flyboy?",
+                "Hammond told me about your mission. You all set?"
+              ],
+              "Can I take some equipment?": [
+                "Choose a few weapons, which will make your mission easier.",
+                "Help yourself to the armory. Better safe than sorry, right?",
+                "Id recommend something with a punch. Grab what you need; were not short on ammo."
+              ],
+              "Will you join me?": [
+                "The doctor didnt allow me to join you guys this time, but I am sure you will manage just fine.",
+                "Id go with you, but orders are orders. Just dont forget to bring me a souvenir.",
+                "Doc says Im grounded this round. Youll be fine, Im sure."
+              ],
+              "Where do I need to go?": [
+                "Carter and Tealc are already waiting in the gateroom. Join them.",
+                "The gates active soon. Carter and Tealc have your back once you step through.",
+                "Youll find Charlie and Tealc near the gate. Theyre prepping for the trip."
+              ]
+            },
+            "inventory": ["P90", "Staff Weapon", "C4"]
+          }
+        },
+        {
+          "name": "Briefing Room",
+          "description": "Used to plan missions.",
+          "objective":"Go to the Armory and talk to Jack O Neill.",
+          "connections": [
+            { "to_room": "Quarters", "type": "local" },
+            { "to_room": "Gateroom", "type": "local" }
+          ],
+          "items":["ID Card"],
+          "npc": {
+            "full_name": "George Hammond",
+            "first_name": "George",
+            "last_name": "Hammond",
+            "dialogues": {
+              "default": [
+                "Good morning, are you ready for your next off-world mission?",
+                "Welcome back, soldier. I trust youre prepared for your upcoming assignment?",
+                "Another day, another mission through the Stargate. Ready when you are."
+              ],
+              "get briefed": [
+                "The Jaffa have built an outpost on Mars and transported a Stargate there. Your mission is to plant C4 in the base.",
+                "Our intelligence confirms a Jaffa presence on Mars. Your task is to neutralize their outpost.",
+                "Weve received reports that the Jaffa have entrenched themselves on Mars. Its up to you to deal with them."
+              ],
+              "ask further": [
+                "The Jaffa base on Mars is heavily fortified. Take what you need from the armory.",
+                "Be careful out there. The Martian outpost wont be easy to breach. Make sure youre well equipped.",
+                "The armory is fully stocked. I suggest you pick up additional gear before heading off-world."
+              ],
+              "bye": [
+                "The entire planet is counting on your success. Good luck.",
+                "I know you wont let us down. Return safely, and may fortune favor you.",
+                "This is vital for Earths future. Do what you must, and come back a hero."
+              ]
+            },
+            "inventory": []
+          }
+        },
+        {
+          "name": "Gateroom",
+          "description": "A Stargate is here.",
+          "connections": [
+            { "to_room": "Briefing Room", "type": "local" }
+          ],
+          "npc": {
+            "full_name": "Teal'c",
+            "first_name": "Teal'c",
+            "last_name": "",
+            "dialogues": {
+              "default": [
+                "It is good to see you. Are you ready for your mission?",
+                "I await your command. The path ahead is challenging, but I trust your courage.",
+                "You will return, friend. Im am sure of it."
+              ],
+              "when do we go?": [
+                "Our Tokra intelligence has reported that the Stargate on Mars is heavily guarded. That means you will go alone.",
+                "The Tokra warned us of heavy resistance. I regret I cannot accompany you this time.",
+                "The Jaffa presence is strong. I must remain here, but I believe in your strength."
+              ]
+            },
+            "inventory": ["Zet'nik'tel"]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Mars",
+      "rooms": [
+        {
+          "name": "Chappa'ai",
+          "description": "The stargate the Goauld have brought to Mars.",
+          "objective":"Plant C4 in the Reactor room without being killed.",
+          "connections": [
+            { "to_room": "Hill", "type": "local" }
+          ],
+          "npc": {
+            "full_name": "Enemy Jaffa",
+            "first_name": "Enemy",
+            "last_name": "Jaffa",
+            "dialogues": {
+              "default": [
+                "You will not survive this battle, Tauri!",
+                "Your end is near, Human!",
+                "I look forward to your defeat."
+              ],
+              "engage": [
+                "For the glory of the gods, you will perish!",
+                "Prepare yourself, Tauri, the gods demand your life!",
+                "Now we fight, and I shall prove my worth to the gods!"
+              ]
+            },
+            "inventory": ["Staff Weapon", "Armor Plating", "Goa'uld Symbol Amulet"],
+            "hostile": true
+          }
+        },
+        {
+          "name": "Hill",
+          "description": "A small hill on Mars with a view of the Goauld base.",
+          "connections": [
+            { "to_room": "Chappa'ai", "type": "local" },
+            { "to_room": "Front Gate", "type": "local" },
+            { "to_room": "Back Entrance", "type": "local" }
+          ],
+          "items":["C4"],
+          "npc": {
+            "full_name": "Tok'ra",
+            "first_name": "Tok'ra",
+            "last_name": "",
+            "dialogues": {
+              "default": [
+                "It is good to see you.",
+                "You made it this far. Excellent.",
+                "Greetings, traveler."
+              ],
+              "information": [
+                "There are 2 entrances to the base, from the front and the back.",
+                "The base can be approached from two angles. Choose wisely."
+              ],
+              "farewell": [
+                "I cant stick around for much longer or they will suspect something.",
+                "I must go. My cover is at risk.",
+                "I wish you luck, but I must leave before I’m discovered."
+              ]
+            },
+            "inventory": ["Goa'uld Translator Device"],
+            "hostile": false
+          }
+        },
+        {
+          "name": "Front Gate",
+          "description": "The heavily guarded entrance of the base.",
+          "connections": [
+            { "to_room": "Hill", "type": "local" },
+            { "to_room": "Hall", "type": "local" }
+          ]
+        },
+        {
+          "name": "Back Entrance",
+          "description": "The other entrance of the base... probably less guarded.",
+          "connections": [
+            { "to_room": "Hill", "type": "local" },
+            { "to_room": "Hall", "type": "local" }
+          ]
+        }, 
+        {
+          "name": "Reactor",
+          "description": "The Reactor room of the base.",
+          "main_objective": "Plant explosives on the reactor",
+          "objective":"After planting C4, use the Chappaai to travel to the hatak.",
+          "connections": [
+            { "to_room": "Hall", "type": "local" }
+          ],
+          "items":["Coordinate Book"],
+          "requirement":["C4"]
+        },               
+        {
+          "name": "Hall",
+          "description": "The hallway in the Goauld base.",
+          "connections": [
+            { "to_room": "Back Entrance", "type": "local" },
+            { "to_room": "Front Gate", "type": "local" },
+            { "to_room": "Reactor", "type": "local" }
+          ],
+          "npc": {
+            "full_name": "Jaffa Patrol",
+            "first_name": "Jaffa",
+            "last_name": "Patrol",
+            "dialogues": {
+              "default": [
+                "You will die for this, Human!",
+                "The gods demand your head, Human!",
+                "Look upon your doom!"
+              ],
+              "engage": [
+                "Kneel before your gods and we will give you an honorable death.",
+                "Submit, and we may spare you a swift end.",
+                "Prove your worth or perish like so many before you."
+              ]
+            },
+            "inventory": ["Staff Weapon", "Armor Plating", "Goa'uld Symbol Amulet"],
+            "hostile": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "Ha'tak",
+      "rooms": [
+        {
+          "name": "Bridge",
+          "description": "The command center of the Hatak ship.",
+          "connections": [
+            { "to_room": "Hallway", "type": "local" }
+          ],
+          "objective":"Plant a grande in the shieldgenerator.",
+          "items":["Grenade"],
+          "requirement":["Staff Weapon"],
+          "npc": {
+            "full_name": "Ra",
+            "first_name": "Ra",
+            "last_name": "",
+            "dialogues": {
+              "default": [
+                "You dare challenge the might of Ra, the Sun God?",
+                "I am Ra, eternal and unmatched. Your audacity will be punished.",
+                "To stand against Ra is to stand against the sun itself!"
+              ]
+            },
+            "inventory": ["Hand Device", "Golden Armor", "Goa'uld Royal Seal"],
+            "hostile": true
+          }
+        },
+        {
+          "name": "Transporter Room",
+          "description": "A Stargate is here for transporting between planets.",
+          "objective": "Locate and kill the system lord.",
+          "connections": [
+            { "to_room": "Hallway", "type": "local" }
+          ],
+          "items":["Staff Weapon"],
+          "requirement":["Coordinate Book"]
+        },
+        {
+          "name": "Hallway",
+          "description": "A long hallway leading to different parts of the ship.",
+          "connections": [
+            { "to_room": "Transporter Room", "type": "local" },
+            { "to_room": "Bridge", "type": "local" },
+            { "to_room": "Shuttle Bay", "type": "local" },
+            { "to_room": "Hallway Section", "type": "local" }
+          ]
+        },
+        {
+          "name": "Hallway Section",
+          "description": "Another section of the hallway.",
+          "connections": [
+            { "to_room": "Hallway", "type": "local" },
+            { "to_room": "Shield Generator", "type": "local" }
+          ]
+        },
+        {
+          "name": "Shuttle Bay",
+          "description": "The bay for storing ships and shuttles.",
+          "connections": [
+            { "to_room": "Hallway", "type": "local" }
+          ]
+        },
+        {
+          "name": "Shield Generator",
+          "description": "The shield generator of the Ha'tak ship.",
+          "objective": "Drop a Grenade.",
+          "connections": [
+            { "to_room": "Hallway Section", "type": "local" }
+          ],
+          "requirement":["Grenade"]
+        }
+
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "from_room": "Gateroom",
+      "to_room": "Chappa'ai",
+      "type": "interplanetary"
+    },
+    {
+      "from_room": "Chappa'ai",
+      "to_room": "Gateroom",
+      "type": "interplanetary"
+    },
+    {
+      "from_room": "Chappa'ai",
+      "to_room": "Transporter Room",
+      "type": "interplanetary"
+    },
+    {
+      "from_room": "Shuttle Bay",
+      "to_room": "Briefing Room",
+      "type": "interplanetary"
+    }
+  ]
+}
