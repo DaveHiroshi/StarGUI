@@ -7,6 +7,7 @@
           "name": "Quarters",
           "description": "Your personal quarters in the SGC.",
           "objective":"Go to the briefing room and talk to General Hammond.",
+          "picture":"./img/quarters.jpg",
           "connections": [
             { "to_room": "Armory", "type": "local" },
             { "to_room": "Briefing Room", "type": "local" }
@@ -17,6 +18,7 @@
           "name": "Armory",
           "description": "Full of weapons.",
           "objective":"Go to the Gate room and travel to mars.",
+          "picture":"./img/armory.jpg",
           "connections": [
             { "to_room": "Quarters", "type": "local" }
           ],
@@ -55,6 +57,7 @@
           "name": "Briefing Room",
           "description": "Used to plan missions.",
           "objective":"Go to the Armory and talk to Jack O Neill.",
+          "picture":"./img/briefing_room.jpg",
           "connections": [
             { "to_room": "Quarters", "type": "local" },
             { "to_room": "Gateroom", "type": "local" }
@@ -92,6 +95,7 @@
         {
           "name": "Gateroom",
           "description": "A Stargate is here.",
+          "picture":"./img/stargate.jpg",
           "connections": [
             { "to_room": "Briefing Room", "type": "local" }
           ],
@@ -123,6 +127,7 @@
           "name": "Chappa'ai",
           "description": "The stargate the Goauld have brought to Mars.",
           "objective":"Plant C4 in the Reactor room without being killed.",
+          "picture":"./img/chappaai.jpg",
           "connections": [
             { "to_room": "Hill", "type": "local" }
           ],
@@ -149,6 +154,7 @@
         {
           "name": "Hill",
           "description": "A small hill on Mars with a view of the Goauld base.",
+          "picture":"./img/hill.jpg",
           "connections": [
             { "to_room": "Chappa'ai", "type": "local" },
             { "to_room": "Front Gate", "type": "local" },
@@ -182,6 +188,7 @@
         {
           "name": "Front Gate",
           "description": "The heavily guarded entrance of the base.",
+          "picture":"./img/front_gate.jpg",
           "connections": [
             { "to_room": "Hill", "type": "local" },
             { "to_room": "Hall", "type": "local" }
@@ -190,6 +197,7 @@
         {
           "name": "Back Entrance",
           "description": "The other entrance of the base... probably less guarded.",
+          "picture":"./img/back_entrance.jpg",
           "connections": [
             { "to_room": "Hill", "type": "local" },
             { "to_room": "Hall", "type": "local" }
@@ -200,6 +208,7 @@
           "description": "The Reactor room of the base.",
           "main_objective": "Plant explosives on the reactor",
           "objective":"After planting C4, use the Chappaai to travel to the hatak.",
+          "picture":"./img/reactor.jpg",
           "connections": [
             { "to_room": "Hall", "type": "local" }
           ],
@@ -209,6 +218,7 @@
         {
           "name": "Hall",
           "description": "The hallway in the Goauld base.",
+          "picture":"./img/hall.jpg",
           "connections": [
             { "to_room": "Back Entrance", "type": "local" },
             { "to_room": "Front Gate", "type": "local" },
@@ -242,6 +252,7 @@
         {
           "name": "Bridge",
           "description": "The command center of the Hatak ship.",
+          "picture":"./img/bridge.jpg",
           "connections": [
             { "to_room": "Hallway", "type": "local" }
           ],
@@ -267,6 +278,7 @@
           "name": "Transporter Room",
           "description": "A Stargate is here for transporting between planets.",
           "objective": "Locate and kill the system lord.",
+          "picture":"./img/hatak.jpg",
           "connections": [
             { "to_room": "Hallway", "type": "local" }
           ],
@@ -276,6 +288,7 @@
         {
           "name": "Hallway",
           "description": "A long hallway leading to different parts of the ship.",
+          "picture":"./img/hallway1.jpg",
           "connections": [
             { "to_room": "Transporter Room", "type": "local" },
             { "to_room": "Bridge", "type": "local" },
@@ -286,6 +299,7 @@
         {
           "name": "Hallway Section",
           "description": "Another section of the hallway.",
+          "picture":"./img/hallway2.jpg",
           "connections": [
             { "to_room": "Hallway", "type": "local" },
             { "to_room": "Shield Generator", "type": "local" }
@@ -294,6 +308,7 @@
         {
           "name": "Shuttle Bay",
           "description": "The bay for storing ships and shuttles.",
+          "picture":"./img/shuttlebay.jpg",
           "connections": [
             { "to_room": "Hallway", "type": "local" }
           ]
@@ -301,11 +316,17 @@
         {
           "name": "Shield Generator",
           "description": "The shield generator of the Ha'tak ship.",
+          "picture":"./img/shield_generator.jpg",
           "objective": "Drop a Grenade.",
           "connections": [
             { "to_room": "Hallway Section", "type": "local" }
           ],
           "requirement":["Grenade"]
+        },
+        {
+          "name": "Ascend",
+          "description": "You have died and ascended to a higher plane of existence.",
+          "picture":"./img/ascend.jpg"
         }
 
       ]

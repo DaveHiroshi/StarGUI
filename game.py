@@ -37,7 +37,7 @@ class Room(GameObject):
         self.requirement = requirement if requirement else []
         self.objective = objective
         self.npc = None
-        self.picture = picture  # ✅ ADD THIS LINE
+        self.picture = picture 
 
 
     def add_connection(self, connection):
@@ -253,7 +253,8 @@ class Game:
                     planet=planet,
                     objective=room_data.get("objective"),
                     requirement=room_data.get("requirement", []),
-                    items=room_data.get("items", [])
+                    items=room_data.get("items", []),
+                    picture=room_data.get("picture", None)
                 )
 
                 # NPCs verarbeiten, falls vorhanden
@@ -364,7 +365,9 @@ class Game:
         """Tötet den Spieler und beendet das Spiel."""
         print("⚠️ You have been captured by the Jaffa forces and have been killed!")
         print("Game Over.")
-        exit(0)
+        self.player.current_room = self.rooms["Ascend"]
+        
+        
 
     def pickup_item(self):
         """Ermöglicht dem Spieler, einen Gegenstand aus dem aktuellen Raum aufzuheben."""
