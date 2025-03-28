@@ -1,0 +1,56 @@
+
+Abgabe - GUI mit TextadventureAufgabe
+🎮 Projekt: Textadventure goes GUI – Mit CustomTkinter zur modernen Oberfläche
+📝 Aufgabenstellung:
+Erweitere dein bisheriges Textadventure um eine grafische Benutzeroberfläche (GUI) mit CustomTkinter (CTk). Ziel ist es, dass alle Eingaben und Ausgaben des Spiels ausschließlich über die GUI laufen. Die klassische Konsolen-Ein- und Ausgabe wird vollständig durch CTk-Elemente ersetzt.
+
+💡 Was soll die GUI können?
+Darstellung der Spielausgabe in einer CTkTextbox, CTkLabel
+
+Eingabe durch z. B. ein Eingabefeld und/oder Auswahlbuttons
+
+Übersichtliche Strukturierung der GUI (Fenstergröße, Layout, Frames)
+
+Optional: Darstellung von Bildern, dynamisches Resize-Verhalten etc.
+
+🎯 Technische Vorgaben:
+Verwendet wird das customtkinter-Modul
+
+Die GUI-Klasse soll von CTk erben
+
+Code sollte klar strukturiert und sauber gekapselt sein
+
+Logik und Oberfläche sollen möglichst getrennt werden (z. B. Spielklasse ↔ GUI-Klasse)
+
+🧠 Beurteilungsgrundlagen:
+🟢 Grundlegende Kompetenzen (Pflicht):
+Das Spiel ist vollständig über die GUI spielbar (keine Konsole mehr nötig)
+
+Die GUI basiert auf einer eigenen Klasse, die korrekt von ctk.CTk erbt
+
+Es gibt eine klare Struktur mit zentralem Fenster, logisch platzierten Elementen (Textfeld, Buttons etc.)
+
+Auswahlmöglichkeiten sind entweder über Buttons oder Text-Eingabe implementiert
+
+🟡 Erweiterte Kompetenzen (Kür):
+Bilder zur Untermalung der Spielwelt
+
+GUI reagiert sinnvoll auf Fenstergrößenänderung (z. B. durch bind("<Configure>"))
+
+Skalierung von Schriftgrößen, Bildern oder Layout-Elementen
+
+Animationen oder visuelle Effekte
+
+Trennung von Spiel- und GUI-Logik in separaten Modulen/Klassen
+
+🧰 Hilfsmittel:
+CustomTkinter-Dokumentation & generative KI als Stütze (nicht als Krücke)
+
+Beispiele & Vorlagen aus dem Unterricht
+
+Euer bestehendes Textadventure als Grundlage
+
+⏰ Abgabe:
+Bis: 11.04.2025
+Format: ZIP oder Ordner mit allen Dateien
+Bonus: .exe-Datei mit pyinstaller erstellt? Gib sie mit ab!
