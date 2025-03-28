@@ -7,7 +7,7 @@ Erweitere dein bisheriges Textadventure um eine grafische Benutzeroberfläche (G
 💡 Was soll die GUI können?
 Darstellung der Spielausgabe in einer CTkTextbox, CTkLabel
 
-Eingabe durch z. B. ein Eingabefeld und/oder Auswahlbuttons
+Eingabe durch z. B. ein Eingabefeld und/oder Auswahlbuttons
 
 Übersichtliche Strukturierung der GUI (Fenstergröße, Layout, Frames)
 
