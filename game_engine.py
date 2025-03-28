@@ -59,7 +59,7 @@ class GameEngine:
                         self.game.kill_player()
                     return f"🚪 You moved to {next_room.name}.\n" + self.get_room_status()
                 else:
-                    return f"🚫 Requirements not met for room '{next_room.name}'."
+                    return f"🚫 Requirements not met for room {next_room.name}, you're missing {next_room.requirement[0]} ."
         return f"❌ No connection to room '{direction_name}'."
 
     def travel(self, destination_index):
@@ -84,7 +84,7 @@ class GameEngine:
                 self.game.update_current_objective(next_room)
                 return f"🌌 You traveled to {next_room.name}.\n" + self.get_room_status()
             else:
-                return f"🚫 Cannot travel. Requirements not met for '{next_room.name}'."
+                return f"🚫 Cannot travel. Requirements not met for {next_room.requirement} '{next_room.name}'."
         return "❌ Invalid travel destination index."
 
     def interact(self):

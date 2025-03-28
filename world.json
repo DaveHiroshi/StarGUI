@@ -42,12 +42,12 @@
               "Will you join me?": [
                 "The doctor didnt allow me to join you guys this time, but I am sure you will manage just fine.",
                 "Id go with you, but orders are orders. Just dont forget to bring me a souvenir.",
-                "Doc says Im grounded this round. Youll be fine, Im sure."
+                "Doc says Im grounded this round. You'll be fine, Im sure."
               ],
               "Where do I need to go?": [
                 "Carter and Tealc are already waiting in the gateroom. Join them.",
                 "The gates active soon. Carter and Tealc have your back once you step through.",
-                "Youll find Charlie and Tealc near the gate. Theyre prepping for the trip."
+                "You'll find Charlie and Tealc near the gate. Theyre prepping for the trip."
               ]
             },
             "inventory": ["P90", "Staff Weapon", "C4"]
@@ -84,7 +84,7 @@
                 "The armory is fully stocked. I suggest you pick up additional gear before heading off-world."
               ],
               "bye": [
-                "The entire planet is counting on your success. Good luck.",
+                "The entire planet is counting on your success. Godspeed.",
                 "I know you wont let us down. Return safely, and may fortune favor you.",
                 "This is vital for Earths future. Do what you must, and come back a hero."
               ]
@@ -117,6 +117,12 @@
             },
             "inventory": ["Zet'nik'tel"]
           }
+        },
+        {
+          "name": "The End",
+          "description": "You have deafeted the system lord Ra and flew back to Earth. You won!",
+          "objective":"Thanks for playing, try again :D.",
+          "picture":"./img/end.jpg"
         }
       ]
     },
@@ -124,7 +130,7 @@
       "name": "Mars",
       "rooms": [
         {
-          "name": "Mars",
+          "name": "Chappaai",
           "description": "The stargate the Goauld have brought to Mars.",
           "objective":"Plant C4 in the Reactor room without being killed.",
           "picture":"./img/chappaai.jpg",
@@ -156,7 +162,7 @@
           "description": "A small hill on Mars with a view of the Goauld base.",
           "picture":"./img/hill.jpg",
           "connections": [
-            { "to_room": "Mars", "type": "local" },
+            { "to_room": "Chappaai", "type": "local" },
             { "to_room": "Front Gate", "type": "local" },
             { "to_room": "Back Entrance", "type": "local" }
           ],
@@ -207,7 +213,7 @@
           "name": "Reactor",
           "description": "The Reactor room of the base.",
           "main_objective": "Plant explosives on the reactor",
-          "objective":"After planting C4, use the Chappaai to travel to the hatak.",
+          "objective":"After planting C4, use the Chappaai to travel to the Ha'tak.",
           "picture":"./img/reactor.jpg",
           "connections": [
             { "to_room": "Hall", "type": "local" }
@@ -256,7 +262,7 @@
           "connections": [
             { "to_room": "Hallway", "type": "local" }
           ],
-          "objective":"Plant a grande in the shieldgenerator.",
+          "objective":"Drop a Grenade into the Shield Generator.",
           "items":["Grenade"],
           "requirement":["Staff Weapon"],
           "npc": {
@@ -275,7 +281,7 @@
           }
         },
         {
-          "name": "Ha'tak",
+          "name": "Transporter Room",
           "description": "You are on the Hatak. There is a Stargate here for transporting between planets.",
           "objective": "Locate and kill the system lord.",
           "picture":"./img/hatak.jpg",
@@ -290,7 +296,7 @@
           "description": "A long hallway leading to different parts of the ship.",
           "picture":"./img/hallway1.jpg",
           "connections": [
-            { "to_room": "Ha'tak", "type": "local" },
+            { "to_room": "Transporter Room", "type": "local" },
             { "to_room": "Bridge", "type": "local" },
             { "to_room": "Shuttle Bay", "type": "local" },
             { "to_room": "Hallway Section", "type": "local" }
@@ -317,7 +323,7 @@
           "name": "Shield Generator",
           "description": "The shield generator of the Ha'tak ship.",
           "picture":"./img/shield_generator.jpg",
-          "objective": "Drop a Grenade.",
+          "objective": "After you have dropped the grenade, run to the Shuttlebay and escape via Deathglider.",
           "connections": [
             { "to_room": "Hallway Section", "type": "local" }
           ],
@@ -326,8 +332,12 @@
         {
           "name": "Ascend",
           "description": "You have died and ascended to a higher plane of existence.",
+          "objective":"You can not help your friends when you're dead, quit and try again.",
           "picture":"./img/ascend.jpg"
         }
+        
+        
+
 
       ]
     }
@@ -335,22 +345,22 @@
   "connections": [
     {
       "from_room": "Gateroom",
-      "to_room": "Mars",
+      "to_room": "Chappaai",
       "type": "interplanetary"
     },
     {
-      "from_room": "Mars",
+      "from_room": "Chappaai",
       "to_room": "Gateroom",
       "type": "interplanetary"
     },
     {
-      "from_room": "Mars",
-      "to_room": "Ha'tak",
+      "from_room": "Chappaai",
+      "to_room": "Transporter Room",
       "type": "interplanetary"
     },
     {
       "from_room": "Shuttle Bay",
-      "to_room": "Briefing Room",
+      "to_room": "The End",
       "type": "interplanetary"
     }
   ]

@@ -275,12 +275,6 @@ class MainApp(ctk.CTk):
             self.update_actions()
         return cmd
     
-    # def show_pickup_dialog(self):
-    #     dialog = ctk.CTkInputDialog(title="Pick up item", text="Enter item name:")
-    #     item_name = dialog.get_input()
-    #     if item_name:
-    #         text = self.engine.pickup(item_name)
-    #         self.update_text(text)
 
     def show_pickup_dialog(self):
         self.clear_frame(self.sub_button_frame)
@@ -309,14 +303,32 @@ class MainApp(ctk.CTk):
             self.clear_frame(self.sub_button_frame)
             self.update_actions()
         return cmd
+    
+    def create_kill_command(self, enemy_name):
+        def cmd():
+            result = self.engine.kill(enemy_name)
+            self.update_text(result)
+            self.clear_frame(self.sub_button_frame)
+            self.update_actions()
+        return cmd
+
 
 
     def show_kill_dialog(self):
-        dialog = ctk.CTkInputDialog(title="Kill Enemy", text="Enter enemy name:")
-        enemy_name = dialog.get_input()
-        if enemy_name:
-            text = self.engine.kill(enemy_name)
-            self.update_text(text)
+        self.clear_frame(self.sub_button_frame)
+        npc = self.engine.player.current_room.npc
+
+        if npc and not npc.dead and npc.hostile:
+            self.update_text("Choose an enemy to attack:")
+            btn = ctk.CTkButton(self.sub_button_frame, text=npc.name)
+            btn.configure(command=self.create_kill_command(npc.firstname))
+            btn.pack(side="left", padx=5)
+
+            cancel_btn = ctk.CTkButton(self.sub_button_frame, text="Cancel", command=self.cancel_sub_buttons)
+            cancel_btn.pack(side="left", padx=5)
+        else:
+            self.update_text("There are no enemies to kill.")
+
 
 
 
@@ -332,21 +344,28 @@ class MainApp(ctk.CTk):
 
     def display_travel_options(self):
         current_room = self.engine.player.current_room
-        self.interplanetary_conns = [
+        interplanetary_conns = [
             conn for conn in current_room.connections if conn.connection_type == "interplanetary"
         ]
 
-        if not self.interplanetary_conns:
+        if not interplanetary_conns:
             self.update_text("⚠️ No interplanetary connections available.")
             return
 
-        for index, conn in enumerate(self.interplanetary_conns):
-            btn = ctk.CTkButton(self.sub_button_frame, text=conn.to_room.capitalize())
-            btn.configure(command=self.create_travel_command(index))
-            btn.pack(side="left", padx=5)
+        self.clear_frame(self.sub_button_frame)
+        self.update_text("🌌 Choose a destination:")
+
+        for index, conn in enumerate(interplanetary_conns):
+            to_room = self.engine.game.find_room_by_name(conn.to_room)
+            if to_room:
+                planet_name = to_room.planet.name
+                btn = ctk.CTkButton(self.sub_button_frame, text=planet_name)
+                btn.configure(command=self.create_travel_command(index))
+                btn.pack(side="left", padx=5)
 
         cancel_btn = ctk.CTkButton(self.sub_button_frame, text="Cancel", command=self.cancel_sub_buttons)
         cancel_btn.pack(side="left", padx=5)
+
 
 
     
