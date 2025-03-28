@@ -275,12 +275,41 @@ class MainApp(ctk.CTk):
             self.update_actions()
         return cmd
     
+    # def show_pickup_dialog(self):
+    #     dialog = ctk.CTkInputDialog(title="Pick up item", text="Enter item name:")
+    #     item_name = dialog.get_input()
+    #     if item_name:
+    #         text = self.engine.pickup(item_name)
+    #         self.update_text(text)
+
     def show_pickup_dialog(self):
-        dialog = ctk.CTkInputDialog(title="Pick up item", text="Enter item name:")
-        item_name = dialog.get_input()
-        if item_name:
-            text = self.engine.pickup(item_name)
-            self.update_text(text)
+        self.clear_frame(self.sub_button_frame)
+        room = self.engine.player.current_room
+        items = room.items
+
+        if not items:
+            self.update_text("There are no items to pick up.")
+            return
+
+        self.update_text("🎒 Choose an item to pick up:")
+
+        for item_name in items:
+            btn = ctk.CTkButton(self.sub_button_frame, text=item_name)
+            btn.configure(command=self.create_pickup_command(item_name))
+            btn.pack(side="left", padx=5)
+
+        cancel_btn = ctk.CTkButton(self.sub_button_frame, text="Cancel", command=self.cancel_sub_buttons)
+        cancel_btn.pack(side="left", padx=5)
+
+
+    def create_pickup_command(self, item_name):
+        def cmd():
+            result = self.engine.pickup(item_name)
+            self.update_text(result)
+            self.clear_frame(self.sub_button_frame)
+            self.update_actions()
+        return cmd
+
 
     def show_kill_dialog(self):
         dialog = ctk.CTkInputDialog(title="Kill Enemy", text="Enter enemy name:")

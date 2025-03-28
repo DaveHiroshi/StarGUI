@@ -32,13 +32,14 @@ class GameEngine:
             actions.append("pickup")
         if room.npc and not room.npc.dead:
             actions.append("interact")
+            if room.npc.hostile:
+                actions.append("kill")
         if any(conn.connection_type == "interplanetary" for conn in room.connections):
             actions.append("travel")
         if room.name.lower() == "reactor":
             actions.append("plant")
         if room.name.lower() == "shield generator":
             actions.append("drop")
-        actions.append("kill")
         return actions
 
     def move(self, direction_name):

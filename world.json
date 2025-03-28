@@ -124,7 +124,7 @@
       "name": "Mars",
       "rooms": [
         {
-          "name": "Chappa'ai",
+          "name": "Mars",
           "description": "The stargate the Goauld have brought to Mars.",
           "objective":"Plant C4 in the Reactor room without being killed.",
           "picture":"./img/chappaai.jpg",
@@ -156,7 +156,7 @@
           "description": "A small hill on Mars with a view of the Goauld base.",
           "picture":"./img/hill.jpg",
           "connections": [
-            { "to_room": "Chappa'ai", "type": "local" },
+            { "to_room": "Mars", "type": "local" },
             { "to_room": "Front Gate", "type": "local" },
             { "to_room": "Back Entrance", "type": "local" }
           ],
@@ -275,8 +275,8 @@
           }
         },
         {
-          "name": "Transporter Room",
-          "description": "A Stargate is here for transporting between planets.",
+          "name": "Ha'tak",
+          "description": "You are on the Hatak. There is a Stargate here for transporting between planets.",
           "objective": "Locate and kill the system lord.",
           "picture":"./img/hatak.jpg",
           "connections": [
@@ -290,7 +290,7 @@
           "description": "A long hallway leading to different parts of the ship.",
           "picture":"./img/hallway1.jpg",
           "connections": [
-            { "to_room": "Transporter Room", "type": "local" },
+            { "to_room": "Ha'tak", "type": "local" },
             { "to_room": "Bridge", "type": "local" },
             { "to_room": "Shuttle Bay", "type": "local" },
             { "to_room": "Hallway Section", "type": "local" }
@@ -335,17 +335,17 @@
   "connections": [
     {
       "from_room": "Gateroom",
-      "to_room": "Chappa'ai",
+      "to_room": "Mars",
       "type": "interplanetary"
     },
     {
-      "from_room": "Chappa'ai",
+      "from_room": "Mars",
       "to_room": "Gateroom",
       "type": "interplanetary"
     },
     {
-      "from_room": "Chappa'ai",
-      "to_room": "Transporter Room",
+      "from_room": "Mars",
+      "to_room": "Ha'tak",
       "type": "interplanetary"
     },
     {
