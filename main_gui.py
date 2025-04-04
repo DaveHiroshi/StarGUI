@@ -1,9 +1,9 @@
 import os
-import pickle
 import customtkinter as ctk
 from PIL import Image
 from game_engine import GameEngine 
 import random
+
 
 
 class ConfirmDialog(ctk.CTkToplevel):
@@ -55,10 +55,16 @@ class MainApp(ctk.CTk):
         self.image_label = ctk.CTkLabel(self.image_frame, text="")
         self.image_label.pack(side="top", padx=10, pady=10)
         
-        # --- Textbox for Game Messages (middle) ---
-        self.textbox = ctk.CTkTextbox(self, width=750)
-        self.textbox.pack(side="top", fill="both", expand=True, pady=5)
-        self.textbox.configure(state="disabled")
+        # --- Frame to hold textbox and minimap side by side ---
+        self.middle_frame = ctk.CTkFrame(self)
+        self.middle_frame.pack(side="top", fill="both", expand=True, pady=5)
+
+        # Textbox on the left
+        self.textbox = ctk.CTkTextbox(self.middle_frame, width=300)
+        self.textbox.pack(side="left", fill="both", expand=True, padx=5, pady=5)
+
+
+
         
         # --- Frame for Main Action Buttons ---
         self.action_frame = ctk.CTkFrame(self)
@@ -81,7 +87,7 @@ class MainApp(ctk.CTk):
     def start_game(self, player_name):
         status = self.engine.initialize_game(player_name)
         self.update_text(status)
-        self.update_image()
+        self.update_room_image()
         self.update_actions()
 
     def update_text(self, message):
@@ -92,14 +98,13 @@ class MainApp(ctk.CTk):
             self.textbox.insert("end", message + "\n")
             self.textbox.configure(state="disabled")
             self.textbox.yview("end")
-        except Exception as e:
-            print("Error updating text:", e)
+        except Exception:
+            print("Error updating text:", Exception)
 
-    def update_image(self):
+    def update_room_image(self):
         room = self.engine.player.current_room
         if room.picture and os.path.exists(room.picture):
             img = Image.open(room.picture)
-            # Use Pillow's LANCZOS resampling (ANTIALIAS is removed)
             img = img.resize((600, 300), Image.Resampling.LANCZOS)
             self.current_ctk_image = ctk.CTkImage(light_image=img, dark_image=img, size=(600, 300))
             self.image_label.configure(image=self.current_ctk_image, text="")
@@ -108,6 +113,19 @@ class MainApp(ctk.CTk):
                 self.image_label.configure(text=f"Image not found: {room.picture}", image=None)
             else:
                 self.image_label.configure(text="No image", image=None)
+
+    def update_planet_image(self):
+        planet = self.engine.player.current_planet
+        if planet.picture and os.path.exists(planet.picture):
+            img = Image.open(planet.picture)
+            img = img.resize((180, 120), Image.Resampling.LANCZOS)
+            self.planet_ctk_image = ctk.CTkImage(light_image=img, dark_image=img, size=(180, 120))
+            self.planet_image_label.configure(image=self.planet_ctk_image, text="")
+        else:
+            self.planet_image_label.configure(text="No minimap available", image=None)
+
+    
+
 
     def clear_frame(self, frame):
         for widget in frame.winfo_children():
@@ -157,16 +175,19 @@ class MainApp(ctk.CTk):
         self.clear_frame(self.action_frame)
         self.clear_frame(self.sub_button_frame)
         actions = self.engine.get_available_actions()
-        # Create buttons for actions provided by the engine.
+
         for action in actions:
-            btn = ctk.CTkButton(self.action_frame, text=action.capitalize(),
-                                command=lambda a=action: self.handle_action(a))
+            btn = ctk.CTkButton(self.action_frame, text=action.capitalize())
+            btn.configure(command=self.create_action_command(action))
             btn.pack(side="left", padx=5)
-        # Add extra buttons for Save and Load.
-        save_btn = ctk.CTkButton(self.action_frame, text="Save", command=self.save_game)
-        save_btn.pack(side="left", padx=5)
-        load_btn = ctk.CTkButton(self.action_frame, text="Load", command=self.load_game)
-        load_btn.pack(side="left", padx=5)
+
+    def create_action_command(self, action):
+        def cmd():
+            self.handle_action(action)
+        return cmd
+
+
+        
 
     def handle_action(self, action):
         self.clear_frame(self.sub_button_frame)
@@ -202,7 +223,7 @@ class MainApp(ctk.CTk):
 
         if major_action:
             self.update_text(self.engine.get_room_status())
-            self.update_image()
+            self.update_room_image()
             self.update_actions()
 
 
@@ -236,8 +257,14 @@ class MainApp(ctk.CTk):
         self.clear_frame(self.sub_button_frame)
         status = self.engine.get_room_status()
         self.update_text(status)
-        self.update_image()
+        self.update_room_image()
         self.update_actions()
+
+    def create_travel_destination_command(self, index):
+        def cmd():
+            self.travel_to_destination(index)
+        return cmd
+
 
     def handle_travel(self):
         if self.engine.player.current_planet.name == "Mars":
@@ -245,8 +272,9 @@ class MainApp(ctk.CTk):
         else:
             destinations = ["Mars"]
         for idx, dest in enumerate(destinations):
-            btn = ctk.CTkButton(self.sub_button_frame, text=dest,
-                                command=lambda i=idx: self.travel_to_destination(i))
+            btn = ctk.CTkButton(self.sub_button_frame, text=dest)
+            btn.configure(command=self.create_travel_destination_command(idx))
+
             btn.pack(side="left", padx=5)
         cancel_btn = ctk.CTkButton(self.sub_button_frame, text="Cancel", command=self.cancel_sub_buttons)
         cancel_btn.pack(side="left", padx=5)
@@ -257,7 +285,7 @@ class MainApp(ctk.CTk):
         self.clear_frame(self.sub_button_frame)
         status = self.engine.get_room_status()
         self.update_text(status)
-        self.update_image()
+        self.update_room_image()
         self.update_actions()
 
     def cancel_sub_buttons(self):
@@ -271,7 +299,7 @@ class MainApp(ctk.CTk):
             text = self.engine.move(room_name)
             self.clear_frame(self.sub_button_frame)
             self.update_text(text)
-            self.update_image()
+            self.update_room_image()
             self.update_actions()
         return cmd
     
@@ -337,7 +365,7 @@ class MainApp(ctk.CTk):
             result = self.engine.travel(index)
             self.clear_frame(self.sub_button_frame)
             self.update_text(result)
-            self.update_image()
+            self.update_room_image()
             self.update_actions()
         return cmd
 
@@ -391,23 +419,7 @@ class MainApp(ctk.CTk):
         cancel_btn.pack(side="left", padx=5)
 
 
-    def save_game(self):
-        try:
-            with open("savegame.pkl", "wb") as f:
-                pickle.dump(self.engine, f)
-            self.update_text("Game saved successfully.")
-        except Exception as e:
-            self.update_text(f"Error saving game: {e}")
-
-    def load_game(self):
-        try:
-            with open("savegame.pkl", "rb") as f:
-                self.engine = pickle.load(f)
-            self.update_text("Game loaded successfully.")
-            self.update_image()
-            self.update_actions()
-        except Exception as e:
-            self.update_text(f"Error loading game: {e}")
+    
 
 if __name__ == "__main__":
     ctk.set_appearance_mode("Light")

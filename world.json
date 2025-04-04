@@ -2,6 +2,7 @@
   "planets": [
     {
       "name": "Earth",
+      "picture":"./img/minimap_earth.jpg",
       "rooms": [
         {
           "name": "Quarters",
@@ -45,8 +46,8 @@
                 "Doc says Im grounded this round. You'll be fine, Im sure."
               ],
               "Where do I need to go?": [
-                "Carter and Tealc are already waiting in the gateroom. Join them.",
-                "The gates active soon. Carter and Tealc have your back once you step through.",
+                "Charlie and Tealc are already waiting in the gateroom. Join them.",
+                "The gates active soon. Charlie and Tealc have your back once you step through.",
                 "You'll find Charlie and Tealc near the gate. Theyre prepping for the trip."
               ]
             },
@@ -128,6 +129,7 @@
     },
     {
       "name": "Mars",
+      "picture":"./img/minimap_mars.jpg",
       "rooms": [
         {
           "name": "Chappaai",
@@ -254,6 +256,7 @@
     },
     {
       "name": "Ha'tak",
+      "picture":"./img/minimap_hatak.jpg",
       "rooms": [
         {
           "name": "Bridge",
@@ -272,8 +275,13 @@
             "dialogues": {
               "default": [
                 "You dare challenge the might of Ra, the Sun God?",
-                "I am Ra, eternal and unmatched. Your audacity will be punished.",
+                "You are but a mere mortal, and I am a god!",
                 "To stand against Ra is to stand against the sun itself!"
+              ],
+              "challange": [
+                "I am Ra, eternal and unmatched. Your audacity will be punished.",
+                "You think you can defeat me? I am the god of the sun, and you are nothing!",
+                "My first prime shall deal with you swiftly. You are no match for my power!"
               ]
             },
             "inventory": ["Hand Device", "Golden Armor", "Goa'uld Royal Seal"],
@@ -317,7 +325,8 @@
           "picture":"./img/shuttlebay.jpg",
           "connections": [
             { "to_room": "Hallway", "type": "local" }
-          ]
+          ],
+          "requirement":["Shuttle manual"]
         },
         {
           "name": "Shield Generator",
@@ -327,7 +336,8 @@
           "connections": [
             { "to_room": "Hallway Section", "type": "local" }
           ],
-          "requirement":["Grenade"]
+          "requirement":["Grenade"],
+          "items":["Shuttle manual"]
         },
         {
           "name": "Ascend",

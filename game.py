@@ -73,12 +73,13 @@ class Room(GameObject):
 # Klasse für Planeten im Spiel, erbt von GameObject
 
 class Planet(GameObject):
-    def __init__(self, name):
+    def __init__(self, name, picture):
         # Validieren des Planetennamens mithilfe der statischen Methode
         if not GameObject.is_valid_name(name):
             raise ValueError(f"Ungültiger Planetname: '{name}'. Der Name muss ein nicht-leerer String sein.")
         
         super().__init__(name, description="Ein Planet im Spiel.")
+        self.picture = picture
         self.rooms = {}  # Dictionary zur Speicherung von Räumen auf diesem Planeten
 
     def add_room(self, room):
@@ -208,7 +209,7 @@ class Game:
         self.rooms = {}  # Dictionary zur Speicherung aller Räume
         self.player = None  # Spielerobjekt
         self.current_objective = ["Go to the briefing room and talk to General Hammond."]  # Aktuelle Ziele des Spielers
-        #add pictures
+        
 
     def load_json(self):
         """Lädt die Spielgeschichte aus einer JSON-Datei."""
@@ -235,7 +236,7 @@ class Game:
                 print(f"⚠️ Warnung: Planet '{planet_name}' existiert bereits und wird übersprungen!")
                 continue
 
-            planet = Planet(name=planet_name)
+            planet = Planet(name=planet_name, picture = planet_data.get("picture", None))  # Planet-Objekt erstellen
             self.planets[planet_name] = planet  # Planet in das Dictionary einfügen
 
             for room_data in planet_data["rooms"]:

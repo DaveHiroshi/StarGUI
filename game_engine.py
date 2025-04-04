@@ -84,7 +84,7 @@ class GameEngine:
                 self.game.update_current_objective(next_room)
                 return f"🌌 You traveled to {next_room.name}.\n" + self.get_room_status()
             else:
-                return f"🚫 Cannot travel. Requirements not met for {next_room.requirement} '{next_room.name}'."
+                return f"🚫 Cannot travel. Requirements not met for {next_room.requirement}."
         return "❌ Invalid travel destination index."
 
     def interact(self):
