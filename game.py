@@ -3,6 +3,7 @@ import json
 import time
 import random
 
+
 #################################################################
 # Basisklasse für alle Spielobjekte
 class GameObject:
