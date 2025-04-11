@@ -98,12 +98,16 @@ class MainApp(ctk.CTk):
             player_name = "Player"
         self.start_game(player_name)
 
+
+
     def start_game(self, player_name):      #starts the game
         status = self.engine.initialize_game(player_name)
         self.update_text(status)
         self.update_room_image()
         self.update_planet_image()
         self.update_actions()
+
+
 
     def update_text(self, message):     #updates the text box with the message
         if not self.textbox.winfo_exists():
@@ -115,6 +119,8 @@ class MainApp(ctk.CTk):
             self.textbox.yview("end")
         except Exception:
             print("Error updating text:", Exception)
+
+
 
     def update_room_image(self):    #updates the room image
         room = self.engine.player.current_room
@@ -128,6 +134,8 @@ class MainApp(ctk.CTk):
                 self.image_label.configure(text=f"Image not found: {room.picture}", image=None)
             else:
                 self.image_label.configure(text="No image", image=None)
+
+
 
     def update_planet_image(self):
         planet = self.engine.player.current_planet
@@ -143,18 +151,23 @@ class MainApp(ctk.CTk):
 
 
     def clear_frame(self, frame):
-        for widget in frame.winfo_children():
-            widget.destroy()
+        for widget in frame.winfo_children():       # Iteriere über alle Widgets im Frame
+            widget.destroy()                        # Zerstöre jedes Widget
 
 
+
+    # Erstellt eine Funktion, die beim Klick eine Antwort des NPC zu einem bestimmten Gesprächsthema anzeigt
     def create_topic_response(self, npc, topic):
-        def cmd():
-            responses = npc.dialogues.get(topic, [])
+        def cmd():                                       # cmd() speichert topic und den NPC und führt die Antwortlogik aus
+            responses = npc.dialogues.get(topic, [])     # Holt mögliche Antworten des NPCs zum gewählten Thema
             if responses:
+                # Zeigt eine zufällige Antwort zum Thema
                 self.update_text(f"{npc.name}: {random.choice(responses)}")
             else:
+                # Falls es keine Antwort mehr gibt, entsprechende Meldung anzeigen
                 self.update_text(f"{npc.name} has nothing more to say about {topic}.")
         return cmd
+
 
     
 
@@ -165,19 +178,19 @@ class MainApp(ctk.CTk):
             self.update_text("There's no one to talk to.")
             return
 
-        # Show default dialogue
+        # Standart Dialog
         default_lines = npc.dialogues.get("default", [])
         if default_lines:
             self.update_text(f"{npc.name}: {random.choice(default_lines)}")
 
-        # List topics
+        # Topics
         topics = [topic for topic in npc.dialogues if topic != "default"]
         if not topics:
             self.update_text(f"{npc.name} has no topics to discuss.")
             return
 
         self.update_text("🗣️ Topics:")
-        for topic in topics:
+        for topic in topics:          #für jeden Topic wird ein Button erstellt
             btn = ctk.CTkButton(self.sub_button_frame, text=topic.capitalize())
             btn.configure(command=self.create_topic_response(npc, topic))
             btn.pack(side="left", padx=5)
@@ -186,23 +199,16 @@ class MainApp(ctk.CTk):
         cancel_btn.pack(side="left", padx=5)
 
 
-    def update_actions(self):
+    def update_actions(self):                   
         self.clear_frame(self.action_frame)
         self.clear_frame(self.sub_button_frame)
         actions = self.engine.get_available_actions()
 
         for action in actions:
-            btn = ctk.CTkButton(self.action_frame, text=action.capitalize())
-            btn.configure(command=self.create_action_command(action))
+            btn = ctk.CTkButton(self.action_frame, text=action.capitalize())    # Erstellt einen Button für jede Aktion
+            btn.configure(command=self.create_action_command(action))           # Weist jedem Button eine Funktion zu, die beim Klick die Aktion ausführt
             btn.pack(side="left", padx=5)
 
-    def create_action_command(self, action):
-        def cmd():
-            self.handle_action(action)
-        return cmd
-
-
-        
 
     def handle_action(self, action):
         self.clear_frame(self.sub_button_frame)
@@ -210,13 +216,13 @@ class MainApp(ctk.CTk):
 
         if action == "move":
             self.display_move_options()
-            return  # Wait for user to click direction
+            return  # warte auf die Auswahl des Spielers
         elif action == "travel":
             self.display_travel_options()
-            return  # Wait for user to click destination
+            return  # warte auf die Auswahl des Spielers
         elif action == "interact":
             self.display_npc_dialogue()
-            return  # early return to wait for button click
+            return  # warte auf die Auswahl des Spielers
         elif action == "pickup":
             self.show_pickup_dialog()
         elif action == "kill":
@@ -224,11 +230,11 @@ class MainApp(ctk.CTk):
         elif action == "plant":
             text = self.engine.plant()
             self.update_text(text)
-            major_action = True
+            major_action = True     # große Aktion, die den Raumstatus ändert
         elif action == "drop":
             text = self.engine.drop()
             self.update_text(text)
-            major_action = True
+            major_action = True     
         elif action == "quit":
             dialog = ConfirmDialog(self, message="Do you really want to quit?")
             if dialog.result:
@@ -236,7 +242,7 @@ class MainApp(ctk.CTk):
                 self.destroy()
                 return
 
-        if major_action:
+        if major_action:   # Wenn eine große Aktion ausgeführt wurde, aktualisiere den Status und die Bilder
             self.update_text(self.engine.get_room_status())
             self.update_room_image()
             self.update_planet_image()
@@ -244,22 +250,31 @@ class MainApp(ctk.CTk):
 
 
 
-    def handle_move(self):
-        current_room = self.engine.player.current_room
-        connections = current_room.connections
-        self.directions_map = {}  # Maps button text to actual room name
 
-        if not connections:
+        # Erstellt eine Funktion (Closure), die beim Klick eine bestimmte Aktion ausführt
+    def create_action_command(self, action):
+        def cmd():                      # cmd() speichert die Aktion und führt sie aus
+            self.handle_action(action)  # Übergibt die Aktion an die zentrale Aktionsverarbeitung
+        return cmd
+
+
+
+
+    def handle_move(self):
+        current_room = self.engine.player.current_room  # Holt den aktuellen Raum des Spielers
+        connections = current_room.connections          # current_room.connections gibt alle Verbindungen des Raums zurück
+        self.directions_map = {}  # Leere Map für die Verbindungen
+
+        if not connections: # Wenn keine Verbindungen vorhanden sind, zeige eine Nachricht an
             self.update_text("There are no available directions to move.")
             self.update_text(self.engine.get_room_status())
             self.update_actions()
             return
 
-        for conn in connections:
-            room_name = conn.to_room
-            self.directions_map[room_name] = room_name
-            btn = ctk.CTkButton(self.sub_button_frame, text=room_name.capitalize())
-            btn.configure(command=self.make_move_callback(room_name))
+        for conn in connections:    # Iteriere über alle Verbindungen
+            room_name = conn.to_room    # Hole den Namen des Ziels
+            self.directions_map[room_name] = room_name  # Speichere die Verbindung in der Map
+            btn = ctk.CTkButton(self.sub_button_frame, text=room_name.capitalize()) # Erstelle einen Button für die Verbindung
             btn.pack(side="left", padx=5)
 
         cancel_btn = ctk.CTkButton(self.sub_button_frame, text="Cancel", command=self.cancel_sub_buttons)
@@ -268,108 +283,134 @@ class MainApp(ctk.CTk):
 
 
     def move_to_direction(self, direction):
-        result = self.engine.move(direction)
-        self.update_text(result)
-        self.clear_frame(self.sub_button_frame)
-        status = self.engine.get_room_status()
-        self.update_text(status)
-        self.update_room_image()
-        self.update_actions()
+        result = self.engine.move(direction)    # Führt die Bewegung in die angegebene Richtung aus und gibt einen Text zurück
+        self.update_text(result)                # Zeigt das Ergebnis im Textfeld    
+        self.clear_frame(self.sub_button_frame) # Entfernt die vorherigen Buttons
+        status = self.engine.get_room_status()  # Holt den neuen Raumstatus
+        self.update_text(status)                # Zeigt den neuen Raumstatus im Textfeld an
+        self.update_room_image()                
+        self.update_actions()                   
 
+        # Erstellt eine Funktion (Closure), die sich den Index merkt und bei Ausführung travel_to_destination aufruft
     def create_travel_destination_command(self, index):
-        def cmd():
+        def cmd():     # cmd() speichert den Index und führt die Reise aus
             self.travel_to_destination(index)
         return cmd
 
-
+    # Steuert die Reiselogik: zeigt passende Ziel-Buttons je nach aktuellem Planeten
     def handle_travel(self):
+        # Zielauswahl abhängig vom aktuellen Planeten
         if self.engine.player.current_planet.name == "Mars":
             destinations = ["Earth", "Ha'tak"]
         else:
             destinations = ["Mars"]
-        for idx, dest in enumerate(destinations):
-            btn = ctk.CTkButton(self.sub_button_frame, text=dest)
-            btn.configure(command=self.create_travel_destination_command(idx))
 
+        # Erzeuge für jedes Reiseziel einen Button
+        for idx, dest in enumerate(destinations):       # Iteriere über die Ziele
+            btn = ctk.CTkButton(self.sub_button_frame, text=dest)
+            # Weise jedem Button eine Funktion zu, die beim Klick das Reisen auslöst
+            btn.configure(command=self.create_travel_destination_command(idx))
             btn.pack(side="left", padx=5)
+
+        # Füge einen Cancel-Button hinzu, um das Auswahlmenü zu schließen
         cancel_btn = ctk.CTkButton(self.sub_button_frame, text="Cancel", command=self.cancel_sub_buttons)
         cancel_btn.pack(side="left", padx=5)
 
+    # Führt die Reiselogik aus, wenn ein Ziel gewählt wurde
     def travel_to_destination(self, choice_idx):
-        result = self.engine.travel(choice_idx)
-        self.update_text(result)
-        self.clear_frame(self.sub_button_frame)
-        status = self.engine.get_room_status()
+        result = self.engine.travel(choice_idx)  # Führt den Reisemechanismus aus und gibt einen Text zurück
+        self.update_text(result)                 # Zeigt das Ergebnis im Textfeld
+        self.clear_frame(self.sub_button_frame)  # Entfernt die Reise-Buttons
+        status = self.engine.get_room_status()   # Holt und zeigt den neuen Raumstatus
         self.update_text(status)
-        self.update_room_image()
-        self.update_planet_image()
-        self.update_actions()
+        self.update_room_image()                 # Aktualisiert das Raumbild
+        self.update_planet_image()               # Aktualisiert das Planetenbild
+        self.update_actions()                    # Aktualisiert die möglichen Aktionen
 
-    def cancel_sub_buttons(self):
-        self.clear_frame(self.sub_button_frame)
-        status = self.engine.get_room_status()
-        self.update_text(status)
-        self.update_actions()
+
+    def cancel_sub_buttons(self):           
+        self.clear_frame(self.sub_button_frame) # Entfernt alle Buttons im Sub-Button-Frame
+        status = self.engine.get_room_status()  # Holt den aktuellen Raumstatus
+        self.update_text(status)                # Zeigt den Raumstatus im Textfeld an
+        self.update_actions()                   # Aktualisiert die möglichen Aktionen im Action-Frame
     
+        # Erstellt eine Funktion (Closure), die beim Klick den Spieler in einen anderen Raum bewegt und die UI aktualisiert
     def create_move_command(self, room_name):
-        def cmd():
-            text = self.engine.move(room_name)
-            self.clear_frame(self.sub_button_frame)
-            self.update_text(text)
-            self.update_room_image()
-            self.update_actions()
+        def cmd():                                     # cmd() speichert den Raum-Namen und führt den Raumwechsel aus
+            text = self.engine.move(room_name)         # Führt den Raumwechsel zum angegebenen Raum aus
+            self.clear_frame(self.sub_button_frame)    # Entfernt vorherige Buttons oder UI-Elemente
+            self.update_text(text)                     # Zeigt den neuen Raumtext oder eine Beschreibung
+            self.update_room_image()                   # Aktualisiert das Bild des aktuellen Raums
+            self.update_actions()                      # Aktualisiert die möglichen Aktionen im neuen Raum
         return cmd
+
     
 
     def show_pickup_dialog(self):
-        self.clear_frame(self.sub_button_frame)
-        room = self.engine.player.current_room
-        items = room.items
+        self.clear_frame(self.sub_button_frame) # Löscht vorherige Buttons oder UI-Elemente
+        room = self.engine.player.current_room  # Holt den aktuellen Raum des Spielers
+        items = room.items                      # Holt die Items im Raum
 
-        if not items:
+        if not items:   
             self.update_text("There are no items to pick up.")
             return
 
-        self.update_text(" Choose an item to pick up:")
+        self.update_text(" Choose an item to pick up:") 
 
-        for item_name in items:
-            btn = ctk.CTkButton(self.sub_button_frame, text=item_name)
-            btn.configure(command=self.create_pickup_command(item_name))
+        for item_name in items: # Iteriere über alle Items im Raum
+            btn = ctk.CTkButton(self.sub_button_frame, text=item_name)      # Erstelle einen Button für jedes Item
+            btn.configure(command=self.create_pickup_command(item_name))    # Weist jedem Button eine Funktion zu, die beim Klick das Item aufhebt
             btn.pack(side="left", padx=5)
 
         cancel_btn = ctk.CTkButton(self.sub_button_frame, text="Cancel", command=self.cancel_sub_buttons)
         cancel_btn.pack(side="left", padx=5)
 
 
+    # Erstellt eine Funktion (Closure), die beim Klick ein Item aufhebt und die UI aktualisiert
     def create_pickup_command(self, item_name):
-        def cmd():
-            result = self.engine.pickup(item_name)
-            self.update_text(result)
-            self.clear_frame(self.sub_button_frame)
-            self.update_actions()
+        def cmd():                                     # cmd() speichert den Item-Namen und führt das Aufheben aus
+            result = self.engine.pickup(item_name)     # Führt das Aufheben des angegebenen Items aus
+            self.update_text(result)                   # Zeigt das Ergebnis im Textfeld
+            self.clear_frame(self.sub_button_frame)    # Entfernt vorherige Buttons oder UI-Elemente
+            self.update_actions()                      # Aktualisiert die möglichen Aktionen nach dem Aufheben
+        return cmd
+
+    
+        # Erstellt eine Funktion (Closure), die beim Klick einen Gegner angreift und die UI aktualisiert
+    def create_kill_command(self, enemy_name):
+        def cmd():                                     # cmd() speichert den Gegner-Namen und führt den Angriff aus
+            result = self.engine.kill(enemy_name)      # Führt den Angriff auf den angegebenen Gegner aus
+            self.update_text(result)                   # Zeigt das Ergebnis im Textfeld (z. B. "Feind besiegt")
+            self.clear_frame(self.sub_button_frame)    # Entfernt vorherige Buttons oder Auswahlmöglichkeiten
+            self.update_actions()                      # Aktualisiert die möglichen Aktionen nach dem Kampf
         return cmd
     
-    def create_kill_command(self, enemy_name):
-        def cmd():
-            result = self.engine.kill(enemy_name)
-            self.update_text(result)
-            self.clear_frame(self.sub_button_frame)
-            self.update_actions()
+
+    # Erstellt eine Funktion (Closure), die beim Klick eine Reise ausführt und die UI aktualisiert
+    def create_travel_command(self, index):
+        def cmd():                                     # cmd() speichert den Index und führt die Reise aus
+            result = self.engine.travel(index)         # Führe die Reise zum Ziel mit dem gegebenen Index aus
+            self.clear_frame(self.sub_button_frame)    # Entferne vorherige Buttons oder UI-Elemente
+            self.update_text(result)                   # Zeige das Ergebnis der Reise im Textfeld
+            self.update_room_image()                   # Aktualisiere das Bild des neuen Raums
+            self.update_planet_image()                 # Aktualisiere das Bild des neuen Planeten
+            self.update_actions()                      # Lade neue Aktionen für den Spieler
         return cmd
+
 
 
 
     def show_kill_dialog(self):
-        self.clear_frame(self.sub_button_frame)
-        npc = self.engine.player.current_room.npc
+        self.clear_frame(self.sub_button_frame)     # Löscht vorherige Buttons oder UI-Elemente
+        npc = self.engine.player.current_room.npc   # Holt den NPC im aktuellen Raum    
 
-        if npc and not npc.dead and npc.hostile:
-            self.update_text("Choose an enemy to attack:")
-            btn = ctk.CTkButton(self.sub_button_frame, text=npc.name)
-            btn.configure(command=self.create_kill_command(npc.firstname))
-            btn.pack(side="left", padx=5)
+        if npc and not npc.dead and npc.hostile:    # Wenn ein feindlicher NPC vorhanden ist
+            self.update_text("Choose an enemy to attack:")  #
+            btn = ctk.CTkButton(self.sub_button_frame, text=npc.name)       # Erstelle einen Button für den NPC
+            btn.configure(command=self.create_kill_command(npc.firstname))  # Weist dem Button eine Funktion zu, die beim Klick den NPC umbringt
+            btn.pack(side="left", padx=5)   
 
-            cancel_btn = ctk.CTkButton(self.sub_button_frame, text="Cancel", command=self.cancel_sub_buttons)
+            cancel_btn = ctk.CTkButton(self.sub_button_frame, text="Cancel", command=self.cancel_sub_buttons) 
             cancel_btn.pack(side="left", padx=5)
         else:
             self.update_text("There are no enemies to kill.")
@@ -377,36 +418,29 @@ class MainApp(ctk.CTk):
 
 
 
-    def create_travel_command(self, index):
-        def cmd():
-            result = self.engine.travel(index)
-            self.clear_frame(self.sub_button_frame)
-            self.update_text(result)
-            self.update_room_image()
-            self.update_planet_image()
-            self.update_actions()
-        return cmd
+    
+
 
 
     def display_travel_options(self):
-        current_room = self.engine.player.current_room
-        interplanetary_conns = [
-            conn for conn in current_room.connections if conn.connection_type == "interplanetary"
+        current_room = self.engine.player.current_room  # Holt den aktuellen Raum des Spielers
+        interplanetary_conns = [    
+            conn for conn in current_room.connections if conn.connection_type == "interplanetary" # holt alle interplanetaren Verbindungen
         ]
 
-        if not interplanetary_conns:
+        if not interplanetary_conns:    # falls keine interplanetaren Verbindungen vorhanden sind
             self.update_text("No interplanetary connections available.")
             return
 
-        self.clear_frame(self.sub_button_frame)
-        self.update_text("Choose a destination:")
+        self.clear_frame(self.sub_button_frame) # Löscht vorherige Buttons oder UI-Elemente
+        self.update_text("Choose a destination:")   
 
-        for index, conn in enumerate(interplanetary_conns):
-            to_room = self.engine.game.find_room_by_name(conn.to_room)
-            if to_room:
-                planet_name = to_room.planet.name
-                btn = ctk.CTkButton(self.sub_button_frame, text=planet_name)
-                btn.configure(command=self.create_travel_command(index))
+        for index, conn in enumerate(interplanetary_conns):     # Iteriere über alle interplanetaren Verbindungen
+            to_room = self.engine.game.find_room_by_name(conn.to_room) # Holt den Zielraum
+            if to_room:                                                 # Wenn der Zielraum existiert
+                planet_name = to_room.planet.name                       # Holt den Planeten-Namen
+                btn = ctk.CTkButton(self.sub_button_frame, text=planet_name)    # Erstelle einen Button für den Planeten
+                btn.configure(command=self.create_travel_command(index))    # Weist dem Button eine Funktion zu, die beim Klick die Reise ausführt
                 btn.pack(side="left", padx=5)
 
         cancel_btn = ctk.CTkButton(self.sub_button_frame, text="Cancel", command=self.cancel_sub_buttons)
@@ -416,22 +450,23 @@ class MainApp(ctk.CTk):
 
     
     def display_move_options(self):
-        current_room = self.engine.player.current_room
-        connections = [conn.to_room for conn in current_room.connections if conn.connection_type != "interplanetary"]
+        current_room = self.engine.player.current_room # Holt den aktuellen Raum des Spielers
+        connections = [conn.to_room for conn in current_room.connections if conn.connection_type != "interplanetary"] # iteriert über alle Verbindungen und filtert interplanetare Verbindungen heraus
 
+        
         if not connections:
             self.update_text("There are no available directions to move.")
             self.update_text(self.engine.get_room_status())
             self.update_actions()
             return
 
-        self.move_buttons = []
+        self.move_buttons = [] # Liste für die Buttons, falls sie später benötigt werden
 
-        for room_name in connections:
-            btn = ctk.CTkButton(self.sub_button_frame, text=room_name.capitalize())
-            btn.configure(command=self.create_move_command(room_name))
-            btn.pack(side="left", padx=5)
-            self.move_buttons.append(btn)
+        for room_name in connections:   # Iteriere über alle Verbindungen
+            btn = ctk.CTkButton(self.sub_button_frame, text=room_name.capitalize()) # Erstelle einen Button für jede Verbindung
+            btn.configure(command=self.create_move_command(room_name)) # Weist jedem Button eine Funktion zu, die beim Klick den Raumwechsel ausführt
+            btn.pack(side="left", padx=5) 
+            self.move_buttons.append(btn) # Speichert die Buttons in einer Liste, falls sie später benötigt werden
 
         cancel_btn = ctk.CTkButton(self.sub_button_frame, text="Cancel", command=self.cancel_sub_buttons)
         cancel_btn.pack(side="left", padx=5)
