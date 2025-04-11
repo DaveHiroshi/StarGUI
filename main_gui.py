@@ -199,6 +199,16 @@ class MainApp(ctk.CTk):
         cancel_btn.pack(side="left", padx=5)
 
 
+
+
+    # Erstellt eine Funktion (Closure), die beim Klick eine bestimmte Aktion ausführt
+    def create_action_command(self, action):
+        def cmd():                      # cmd() speichert die Aktion und führt sie aus
+            self.handle_action(action)  # Übergibt die Aktion an die zentrale Aktionsverarbeitung
+            
+        return cmd
+
+
     def update_actions(self):                   
         self.clear_frame(self.action_frame)
         self.clear_frame(self.sub_button_frame)
@@ -208,6 +218,7 @@ class MainApp(ctk.CTk):
             btn = ctk.CTkButton(self.action_frame, text=action.capitalize())    # Erstellt einen Button für jede Aktion
             btn.configure(command=self.create_action_command(action))           # Weist jedem Button eine Funktion zu, die beim Klick die Aktion ausführt
             btn.pack(side="left", padx=5)
+
 
 
     def handle_action(self, action):
@@ -251,11 +262,7 @@ class MainApp(ctk.CTk):
 
 
 
-        # Erstellt eine Funktion (Closure), die beim Klick eine bestimmte Aktion ausführt
-    def create_action_command(self, action):
-        def cmd():                      # cmd() speichert die Aktion und führt sie aus
-            self.handle_action(action)  # Übergibt die Aktion an die zentrale Aktionsverarbeitung
-        return cmd
+       
 
 
 

@@ -2,6 +2,7 @@ from time import sleep
 import json
 import time
 import random
+import os
 
 
 #################################################################
@@ -213,16 +214,22 @@ class Game:
         
 
     def load_json(self):
-        """Lädt die Spielgeschichte aus einer JSON-Datei."""
-        with open("game_story.json", 'r') as story_file:
+        """Lädt die Spielgeschichte aus einer JSON-Datei im gleichen Verzeichnis wie dieses Skript."""
+        base_path = os.path.dirname(__file__)  # Pfad zum Verzeichnis von game.py
+        story_path = os.path.join(base_path, "game_story.json")  # Absoluter Pfad zur JSON-Datei
+
+        with open(story_path, 'r', encoding='utf-8') as story_file:
             self.story_data["game_story"] = json.load(story_file)
 
     def create_game(self, world_file="world.json"):
-        """Erstellt die Spielwelt, indem sie aus einer JSON-Datei geladen wird."""
-        import json
+        """Erstellt die Spielwelt, indem sie aus einer JSON-Datei im gleichen Verzeichnis geladen wird."""
+
+        # Absoluten Pfad zur JSON-Datei ermitteln – relativ zur Datei, in der diese Funktion steht
+        base_path = os.path.dirname(__file__)
+        world_path = os.path.join(base_path, world_file)
 
         # Lade die Spieldaten aus der JSON-Datei
-        with open(world_file, 'r') as file:
+        with open(world_path, 'r', encoding='utf-8') as file:
             world_data = json.load(file)
 
         # Zwischenspeicher für Verbindungen, die später hinzugefügt werden
